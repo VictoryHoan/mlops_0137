@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HDB Resale Price Predictor</title>
+</head>
+<body>
+    <h2>Predict HDB Resale Price</h2>
+    <form action="/predict" method="post">
+        <label for="latitude">Latitude:</label><br>
+        <input type="text" id="latitude" name="latitude"><br><br>
+
+        <label for="longitude">Longitude:</label><br>
+        <input type="text" id="longitude" name="longitude"><br><br>
+
+        <label for="floor_area">Floor Area (sqm):</label><br>
+        <input type="text" id="floor_area" name="floor_area"><br><br>
+
+        <label for="remaining_lease">Remaining Lease (years):</label><br>
+        <input type="text" id="remaining_lease" name="remaining_lease"><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+    <br>
+    <div id="result"></div>
+
+    <script>
+        const form = document.querySelector('form');
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            document.getElementById('result').innerText = "Predicted Price: $${data.predicted_price.toFixed(2)}";
+        };
+    </script>
+</body>
+</html>
